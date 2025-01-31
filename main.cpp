@@ -11,12 +11,11 @@ int verify_int(){
     // get initial input
     std::cin >> input;
     // now verify for pos.int
-    while(std::cin.fail() || input<=0){
-        std::cerr << "Error. Please enter a positive integer: ";
-        // clear error flag
+    if(std::cin.fail() || input <= 0){
+        std::cerr << "Error. Not a positive integer: ";
         std::cin.clear();
         std::cin.ignore(256,'\n');
-        std::cin >> input;
+        input = verify_int();
     }
     return input;
 }
@@ -29,63 +28,39 @@ float findval(int Z, int n_i, int n_f){
     return temp;
 }
 
-bool checkeV(){
+bool in_char(char truecase, char falsecase){
     char temp;
-    // send prompts
-    std::cout << "Enter 'e' for results in eV, and 'J' for results in Joules: ";
+    // initialise cin
+    std::cin.clear();
+    std::cin.ignore(256,'\n');
     std::cin >> temp;
-    // verify
-     while(true){
-        while(std::cin.fail()){
-            std::cerr << "Error. Please try again: ";
-            std::cin.clear();
-            std::cin.ignore(256,'\n');
-            std::cin >> temp;
-        }
-        // check for ev
-        if(temp == 'J'){
-            return true;
-        }
-        // check for joules
-        else if (temp == 'e'){
-            return false;
-        }
-        // obviously neither, so please requery
+    // check query
+    if(std::cin.fail()){
         std::cerr << "Error. Please try again: ";
-        std::cin.ignore(256,'\n');
-        std::cin >> temp;
+        return in_char(truecase,falsecase);
     }
+    if(temp == truecase){
+        return true;
+    }
+    if(temp == falsecase){
+        return false;
+    }
+    std::cerr << "Error. Please try again: ";
+    return in_char(truecase,falsecase);
+}
+
+bool checkeV(){
+    std::cout << "Enter 'e' for results in eV, and 'J' for results in Joules: ";
+    // run checker
+    return in_char('J','e');
 }
 
 bool query(){
     std::cout << "Would you like to repeat the program?\n";
     // send prompts
     std::cout << "Enter 'y' for yes, and 'n' for no: ";
-    // declare input
-    char temp;
-    // receive input
-    std::cin >> temp;
-    // check for invalid input, and re-query if so
-    while(true){
-        while(std::cin.fail()){
-            std::cerr << "Error. Please try again: ";
-            std::cin.clear();
-            std::cin.ignore(256,'\n');
-            std::cin >> temp;
-        }
-        // check for yes
-        if(temp == 'y'){
-            return true;
-        }
-        // check for no
-        else if (temp == 'n'){
-            return false;
-        }
-        // obviously neither, so please requery
-        std::cerr << "Error. Please try again: ";
-        std::cin.ignore(256,'\n');
-        std::cin >> temp;
-    }
+    // run checker
+    return in_char('y','n');
 }
 
 int main(){
@@ -95,8 +70,8 @@ int main(){
     int Z;
     float result;
     bool unit;
-    bool repeat{true};
-    while(repeat){
+    bool repeat;
+    do{
         // Print welcome message
         std::cout << "Welcome to Bohr Calculator v1.0 \n";
         // Find Z
@@ -119,7 +94,7 @@ int main(){
         std::cout << result << std::endl;
         // check for repeat
         repeat = query();
-    }
+    } while(repeat);
     // end program
     return 0;
 }
