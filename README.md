@@ -12,3 +12,16 @@ The program should do the following:
 - Query to repeat the program.
 
 Additionally, there should be input validation.
+
+Current features:
+- Successfully validates integers
+    -> exception for inputs > 256 characters?
+    -> could fix this by clearing the maximum cin size
+- Successfully validates chars
+    -> same problem.
+- Successfully calculates correct values.
+    -> display with units?
+- Successfully queries for repetition.
+- Successfully checks that n_i > n_f
+
+- Test cases return the correct results. Done?
