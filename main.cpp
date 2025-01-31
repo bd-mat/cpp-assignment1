@@ -70,10 +70,12 @@ int main(){
     int Z;
     float result;
     bool unit;
-    bool repeat;
+    bool repeat{true};
+    bool valid;
+    // Print welcome message
+    std::cout << "Welcome to Bohr Calculator v1.0 \n";
+    // begin action loop
     do{
-        // Print welcome message
-        std::cout << "Welcome to Bohr Calculator v1.0 \n";
         // Find Z
         std::cout << "Please specify an atomic number: ";
         Z = verify_int();
@@ -83,17 +85,22 @@ int main(){
         // find n_fin
         std::cout << "Please specify a final n: ";
         n_fin = verify_int();
-        // find bare result
-        result = findval(Z,n_init,n_fin);
-        // convert as necessary
-        unit = checkeV();
-        if(unit){
-            result = result*(1.6e-19);
+        // verify if n_i > n_f
+        if(n_init > n_fin){
+            // find bare result
+            result = findval(Z,n_init,n_fin);
+            // convert as necessary
+            unit = checkeV();
+            if(unit){
+                result = result*(1.6e-19);
+            }
+            // print result in desired unit
+            std::cout << result << std::endl;
+            // check for repeat
+            repeat = query();
+        } else{
+            std::cerr << "Error. n_init must be greater than n_final.\n";
         }
-        // print result in desired unit
-        std::cout << result << std::endl;
-        // check for repeat
-        repeat = query();
     } while(repeat);
     // end program
     return 0;
